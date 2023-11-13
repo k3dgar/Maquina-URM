@@ -4,17 +4,8 @@ import java.util.regex.Pattern;
 
 public class maquinaURM {
     public static void main(String[] args) {
-        ArrayList<String> listaInstrucciones = new ArrayList<String>();// Aqui agaurdare todas las instruciones que me
-                                                                       // ingresara el usuario de la maquina URM.
-        int[][] registros = new int[100][5];// Esta matriz es para ver los registros de la maquina urm y como se van
-                                            // modificando paso por paso con cada instruccion
-        int registrosAOcupar;
-        for (int i = 0; i < 100; i++) {// llenado de toda la matriz con 0 como una maquina URM al iniciar cualquier
-                                       // programa
-            for (int j = 0; j < 5; j++) {
-                registros[i][j] = 0;
-            }
-        }
+        ArrayList<String> listaInstrucciones = new ArrayList<String>();// Aqui agaurdare todas las instruciones que ingresara el usuario de la maquina URM.
+       
 
         // Aqui podria poner un letrero para que ingresaran el codigo del programa y las
         // entradas
@@ -31,56 +22,67 @@ public class maquinaURM {
         listaInstrucciones.add("S(3)");
         listaInstrucciones.add("J(1,1,5)");
 
-        registrosAOcupar = 3;
+        int registrosAOcupar = 4;
+         int[][] registros = new int[100][registrosAOcupar+1];// Esta matriz es para ver los registros de la maquina urm y como se van modificando paso por paso con cada instruccion
+        for (int i = 0; i < 100; i++) {// llenado de toda la matriz con 0 como una maquina URM al iniciar cualquier programa
+            for (int j = 0; j < registrosAOcupar; j++) {
+                registros[i][j] = 0;
+            }
+        }  
+        
         // continuacion
         int numeroInstruccion = 0;// Es para saber en que instruccion de el programa voy
-        int filaApuntada = 1;// Esto es para el actualizado de los registros de la maquina URM ya que en mi
-                             // caso lo hice paso por paso.
+        int filaApuntada = 1;// Esto es para el actualizado de los registros de la maquina URM ya que en mi caso lo hice paso por paso.
         int registroUtilizado = 0;
         int auxiliarT = 0;// Sera utilizado para la Transferencia
 
         Pattern p;//Las siguientes 5 instrucciones son para el salto
         Matcher m ;
         int contador;
-        int j1=0,j2=0;
-        while (numeroInstruccion < listaInstrucciones.size()) {// la condicion de paro es hasta que ya no tenga instruciones que hacer
+        int j1=0,j2=0,j;
+         for (j = 1; j < registrosAOcupar; j++) {
+            System.out.print(" R"+j+" |");
+        }
+        System.out.print(" Next\n");
+        while (numeroInstruccion < listaInstrucciones.size() && filaApuntada<99) {// la condicion de paro es hasta que ya no tenga instruciones que hacer
             switch (listaInstrucciones.get(numeroInstruccion).charAt(0)) {// El switch es para ver que instruccion de las 4 puso para poder ejecutarla.
                 case 'Z':
-                    System.out.println("Z");
+                    //System.out.println("Z");
                     p = Pattern.compile("\\b\\d{1,2}\\b");
                         m = p.matcher(listaInstrucciones.get(numeroInstruccion));
-
+                        
                         contador = 0;
                         while (m.find()) {
                             contador++;
                             if (contador == 1) {
                                 registroUtilizado =  Integer.parseInt(m.group());
-                                System.out.println(registroUtilizado);
+                               // System.out.println(registroUtilizado);
                                 break;
                             }
                         }
                     registros[filaApuntada][registroUtilizado] = 0;
                     numeroInstruccion++;
+                    registros[filaApuntada][4] = numeroInstruccion;
                     break;
                 case 'S':
-                    System.out.println("S");
+                    //System.out.println("S");
                      p = Pattern.compile("\\b\\d{1,2}\\b");
                         m = p.matcher(listaInstrucciones.get(numeroInstruccion));
-
                         contador = 0;
                         while (m.find()) {
                             contador++;
                             if (contador == 1) {
                                 registroUtilizado =  Integer.parseInt(m.group());
-                                System.out.println(registroUtilizado);
+                                //System.out.println(registroUtilizado);
                                 break;
                             }
                         }
                     registros[filaApuntada][registroUtilizado] = 1 + registros[filaApuntada - 1][registroUtilizado];
                     numeroInstruccion++;
+                    registros[filaApuntada][4] = numeroInstruccion;
                     break;
                 case 'T':
-                    System.out.println("T");
+                    //System.out.println("T");
                      p = Pattern.compile("\\b\\d{1,2}\\b");
                         m = p.matcher(listaInstrucciones.get(numeroInstruccion));
 
@@ -89,7 +91,7 @@ public class maquinaURM {
                             contador++;
                             if (contador == 1) {
                                auxiliarT =  Integer.parseInt(m.group());
-                                System.out.println(registroUtilizado);
+                                //System.out.println(registroUtilizado);
                                 break;
                             }
                         }
@@ -98,15 +100,16 @@ public class maquinaURM {
                             contador++;
                             if (contador == 1) {
                                registroUtilizado=  Integer.parseInt(m.group());
-                                System.out.println(registroUtilizado);
+                                //System.out.println(registroUtilizado);
                                 break;
                             }
                         }
                     registros[filaApuntada][registroUtilizado] = registros[filaApuntada - 1][auxiliarT];
                     numeroInstruccion++;
+                    registros[filaApuntada][4] = numeroInstruccion;
                     break;
                 case 'J':
-                    System.out.println("J");
+                    //System.out.println("J");
                     p = Pattern.compile("\\b\\d{1,2}\\b");
                         m = p.matcher(listaInstrucciones.get(numeroInstruccion));
 
@@ -115,10 +118,10 @@ public class maquinaURM {
                             contador++;
                             if (contador == 1) {
                               j1=  Integer.parseInt(m.group());
-                                System.out.println(j1);
+                                //System.out.println(j1);
                             }else if(contador == 2){
                                 j2=  Integer.parseInt(m.group());
-                                System.out.println(j2);
+                                //System.out.println(j2);
                                 break;
                             }
                         }
@@ -131,19 +134,21 @@ public class maquinaURM {
                             contador++;
                             if (contador == 3) {
                                 numeroInstruccion =  Integer.parseInt(m.group())-1;
-                                System.out.println(numeroInstruccion);
+                                registros[filaApuntada][4] = numeroInstruccion;
+                                //System.out.println(numeroInstruccion);
                                 break;
                             }
                         }
                     } else {
                         numeroInstruccion++;
+                        registros[filaApuntada][4] = numeroInstruccion;
                     }
                     registroUtilizado = 0;
                     break;
                 default:
                     break;
             }
-            for (int i = 1; i <= registrosAOcupar; i++) {
+            for (int i = 1; i < registrosAOcupar; i++) {
                 if (registroUtilizado != i) {
                     registros[filaApuntada][i] = registros[filaApuntada - 1][i];
                 }
@@ -151,10 +156,14 @@ public class maquinaURM {
             filaApuntada++;
         }
         // Impresion de la tabla de los registros
-        System.out.print("| R1 | R2 | R3 | R4 | R5 |\n");
-        for (int j = 1; j < filaApuntada; j++) {
-            for (int k = 1; k <= registrosAOcupar; k++) {
+        for (j = 1; j < filaApuntada; j++) {
+            for (int k = 1; k < registrosAOcupar; k++) {
                 System.out.print("  " + registros[j][k] + "  ");
+            }
+            if (j==filaApuntada-1) {
+                 System.out.print(" End");
+            }else{
+                System.out.print(" "+listaInstrucciones.get(registros[j][4]));
             }
             System.out.println();
         }
