@@ -26,11 +26,15 @@ public class maquinaURM {
         int registrosAOcupar = teclado.nextInt();
          int[][] registros = new int[100][registrosAOcupar+2];// Esta matriz es para ver los registros de la maquina urm y como se van modificando paso por paso con cada instruccion
         for (int i = 0; i < 100; i++) {// llenado de toda la matriz con 0 como una maquina URM al iniciar cualquier programa
-            for (int j = 0; j < registrosAOcupar; j++) {
+            for (int j = 0; j < registrosAOcupar+1; j++) {
                 registros[i][j] = 0;
             }
         }  
-        
+         for (int j = 1; j < registrosAOcupar+1; j++) {
+            System.out.println("Ingresa que hay en el registro R"+j+":");
+                numero = teclado.nextInt();
+                registros[0][j] = numero;
+            }
         // continuacion
         int numeroInstruccion = 0;// Es para saber en que instruccion de el programa voy
         int filaApuntada = 1;// Esto es para el actualizado de los registros de la maquina URM ya que en mi caso lo hice paso por paso.
@@ -46,7 +50,7 @@ public class maquinaURM {
         }
         System.out.print(" Next\n");
         for (j = 1; j < registrosAOcupar+1; j++) {
-            System.out.print("  0  ");
+            System.out.print("  "+registros[0][j]+"  ");
         }
         System.out.print(listaInstrucciones.get(0)+"\n");
         while (numeroInstruccion < listaInstrucciones.size() && filaApuntada<99) {// la condicion de paro es hasta que ya no tenga instruciones que hacer
